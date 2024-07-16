@@ -90,20 +90,20 @@ endif()
 
 list(APPEND TARGET_LIBRARIES sioclient)
 
-find_package(OpenSSL)
+find_package(openssl)
 
-if(OPENSSL_FOUND)
+
     add_library(sioclient_tls ${ALL_SRC})
     target_include_directories(sioclient_tls PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
         PRIVATE
         ${MODULE_INCLUDE_DIRS}
-        ${OPENSSL_INCLUDE_DIR}
+#        ${OPENSSL_INCLUDE_DIR}
     )
 
     target_compile_features(sioclient_tls PUBLIC cxx_std_11)
-    target_link_libraries(sioclient_tls PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    target_link_libraries(sioclient_tls PRIVATE openssl::ssl openssl::crypto)
     if (NOT USE_SUBMODULES)
         target_link_libraries(sioclient_tls PRIVATE websocketpp::websocketpp asio asio::asio rapidjson)
     endif()
@@ -120,7 +120,7 @@ if(OPENSSL_FOUND)
     endif()
 
     list(APPEND TARGET_LIBRARIES sioclient_tls)
-endif()
+
 
 export(PACKAGE sioclient)
 
